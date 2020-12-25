@@ -23,7 +23,8 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Route(value = "model", layout = MainView.class)
 @PageTitle("Model")
@@ -42,12 +43,10 @@ public class ModelView extends Div {
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
     private final Button cancel = new Button("Cancel");
-
     private Model model;
 
     public ModelView() {
         setId("color-view");
-        System.out.println(service.getAll());
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
@@ -122,7 +121,7 @@ public class ModelView extends Div {
 
         FormLayout formLayout = new FormLayout();
         name = new TextField("Name");
-        brand = new ComboBox<>();
+        brand = new ComboBox<>("Brand");
         Set<String> brands = new TreeSet<>();
         for (Model temp : service.getAll()) {
             brands.add(temp.getBrand());
