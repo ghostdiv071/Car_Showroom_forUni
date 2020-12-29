@@ -28,7 +28,6 @@ import java.util.Optional;
 @Route(value = "color", layout = MainView.class)
 @PageTitle("Color")
 @CssImport("./styles/views/color/color-view.css")
-@RouteAlias(value = "", layout = MainView.class)
 public class ColorView extends Div {
 
     private Binder<Color> binder;

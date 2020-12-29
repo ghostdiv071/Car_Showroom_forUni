@@ -56,10 +56,9 @@ public class CarShowroomDAO implements DAO<CarShowroom> {
                     "\tjoin car_showroom on city.id = car_showroom.city_id\n")
             ) {
                 while (rs.next()) {
-                    System.out.println(rs.getInt("id"));
                     result.add(new CarShowroom(rs.getInt("id"),
                             rs.getString("street"),
-                            rs.getShort("house"),
+                            rs.getInt("house"),
                             rs.getString("city"))
                     );
                 }

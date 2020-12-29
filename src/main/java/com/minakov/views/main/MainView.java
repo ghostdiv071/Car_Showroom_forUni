@@ -1,6 +1,8 @@
 package com.minakov.views.main;
 
+import com.minakov.entity.carShowroom.CarShowroom;
 import com.minakov.views.brand.BrandView;
+import com.minakov.views.carShowroom.CarShowroomView;
 import com.minakov.views.carcase.CarcaseView;
 import com.minakov.views.color.ColorView;
 import com.minakov.views.model.ModelView;
@@ -78,7 +80,8 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Color", ColorView.class),
+        return new Tab[]{createTab("Car Showroom", CarShowroomView.class),
+                createTab("Color", ColorView.class),
                 createTab("Carcase", CarcaseView.class),
                 createTab("Brand", BrandView.class),
                 createTab("Model", ModelView.class)};
