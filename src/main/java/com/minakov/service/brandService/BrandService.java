@@ -1,6 +1,6 @@
 package com.minakov.service.brandService;
 
-import com.minakov.ConnectionUtils;
+import com.minakov.utils.ConnectionUtils;
 import com.minakov.dao.brandDAO.BrandDAO;
 import com.minakov.entity.brand.Brand;
 import com.minakov.service.Service;

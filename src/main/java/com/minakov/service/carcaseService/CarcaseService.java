@@ -1,6 +1,6 @@
 package com.minakov.service.carcaseService;
 
-import com.minakov.ConnectionUtils;
+import com.minakov.utils.ConnectionUtils;
 import com.minakov.dao.carcaseDAO.CarcaseDAO;
 import com.minakov.entity.carcase.Carcase;
 import com.minakov.service.Service;

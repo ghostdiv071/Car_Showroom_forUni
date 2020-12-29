@@ -2,16 +2,17 @@ package com.minakov.views.carShowroom;
 
 import com.minakov.entity.carShowroom.CarShowroom;
 import com.minakov.service.carShowroomService.CarShowroomService;
+import com.minakov.utils.Statistics;
 import com.minakov.views.main.MainView;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.charts.model.ChartType;
-import com.vaadin.flow.component.charts.model.Configuration;
+import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -30,6 +31,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -53,7 +55,10 @@ public class CarShowroomView extends Div {
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
     private final Button cancel = new Button("Cancel");
+    private final Button stat = new Button("Show statistics");
     private final Button cars = new Button("Show cars");
+
+    private final Dialog dialog = new Dialog();
 
     private CarShowroom carShowroom;
 
@@ -125,8 +130,11 @@ public class CarShowroomView extends Div {
             refreshGrid();
         });
         
+        stat.addClickListener(e -> showCars());
+
         cars.addClickListener(e -> {
-           showCars(); 
+            dialog.removeAll();
+            dialog.open();
         });
     }
 
@@ -162,13 +170,36 @@ public class CarShowroomView extends Div {
     }
 
     private void showCars() {
+        dialog.removeAll();
         Chart chart = new Chart();
 
         Configuration configuration = chart.getConfiguration();
         configuration.setTitle("");
         chart.getConfiguration().getChart().setType(ChartType.COLUMN);
 
+        List<Statistics> statistics = service.statistics();
+        for (Statistics s : statistics) {
+            configuration.addSeries(new ListSeries(s.getCity(), s.getCount()));
+        }
 
+        XAxis x = new XAxis();
+        x.setCrosshair(new Crosshair());
+        x.setCategories("Car Showrooms");
+        configuration.addxAxis(x);
+
+        YAxis y = new YAxis();
+        y.setMin(0);
+        y.setTitle("Amount of t axed cars");
+        configuration.addyAxis(y);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setShared(true);
+        configuration.setTooltip(tooltip);
+
+        dialog.add(chart);
+        dialog.setHeight("500px");
+        dialog.setWidth("400px");
+        dialog.open();
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {
@@ -209,8 +240,9 @@ public class CarShowroomView extends Div {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        stat.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         cars.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        buttonLayout.add(save, delete, cancel, cars);
+        buttonLayout.add(save, delete, cancel, stat);
         editorLayoutDiv.add(buttonLayout);
     }
 

@@ -1,6 +1,6 @@
 package com.minakov.service.colorService;
 
-import com.minakov.ConnectionUtils;
+import com.minakov.utils.ConnectionUtils;
 import com.minakov.dao.colorDAO.ColorDAO;
 import com.minakov.entity.color.Color;
 import com.minakov.service.Service;

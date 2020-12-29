@@ -1,6 +1,6 @@
 package com.minakov.service.modelService;
 
-import com.minakov.ConnectionUtils;
+import com.minakov.utils.ConnectionUtils;
 import com.minakov.dao.modelDAO.ModelDAO;
 import com.minakov.entity.model.Model;
 import com.minakov.service.Service;

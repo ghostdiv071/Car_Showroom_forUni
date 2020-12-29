@@ -1,9 +1,10 @@
 package com.minakov.service.carShowroomService;
 
-import com.minakov.ConnectionUtils;
+import com.minakov.utils.ConnectionUtils;
 import com.minakov.dao.carShowroomDAO.CarShowroomDAO;
 import com.minakov.entity.carShowroom.CarShowroom;
 import com.minakov.service.Service;
+import com.minakov.utils.Statistics;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -132,5 +133,28 @@ public class CarShowroomService implements Service<CarShowroom> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Statistics> statistics() {
+        final List<Statistics> statistics = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(ConnectionUtils.URL.value,
+                ConnectionUtils.USER.value, ConnectionUtils.PASSWORD.value)
+        ) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(Statistics.STAT_QUERY)) {
+                    while (resultSet.next()) {
+                        statistics.add(new Statistics(
+                                resultSet.getString("City"),
+                                resultSet.getInt("Taxed_Cars"))
+                        );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return statistics;
     }
 }
