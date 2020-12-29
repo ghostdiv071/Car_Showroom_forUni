@@ -56,7 +56,6 @@ public class CarShowroomView extends Div {
     private final Button delete = new Button("Delete");
     private final Button cancel = new Button("Cancel");
     private final Button stat = new Button("Show statistics");
-    private final Button cars = new Button("Show cars");
 
     private final Dialog dialog = new Dialog();
 
@@ -129,13 +128,9 @@ public class CarShowroomView extends Div {
             clearForm();
             refreshGrid();
         });
-        
+
         stat.addClickListener(e -> showCars());
 
-        cars.addClickListener(e -> {
-            dialog.removeAll();
-            dialog.open();
-        });
     }
 
     private void addFiltersToGrid() {
@@ -241,7 +236,6 @@ public class CarShowroomView extends Div {
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         stat.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        cars.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         buttonLayout.add(save, delete, cancel, stat);
         editorLayoutDiv.add(buttonLayout);
     }
