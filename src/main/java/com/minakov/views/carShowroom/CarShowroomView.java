@@ -1,13 +1,15 @@
 package com.minakov.views.carShowroom;
 
 import com.minakov.entity.carShowroom.CarShowroom;
-import com.minakov.entity.model.Model;
 import com.minakov.service.carShowroomService.CarShowroomService;
 import com.minakov.views.main.MainView;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.charts.Chart;
+import com.vaadin.flow.component.charts.model.ChartType;
+import com.vaadin.flow.component.charts.model.Configuration;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -160,6 +162,13 @@ public class CarShowroomView extends Div {
     }
 
     private void showCars() {
+        Chart chart = new Chart();
+
+        Configuration configuration = chart.getConfiguration();
+        configuration.setTitle("");
+        chart.getConfiguration().getChart().setType(ChartType.COLUMN);
+
+
     }
 
     private void createEditorLayout(SplitLayout splitLayout) {

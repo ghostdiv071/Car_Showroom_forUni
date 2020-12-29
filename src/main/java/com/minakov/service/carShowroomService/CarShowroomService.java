@@ -1,17 +1,21 @@
 package com.minakov.service.carShowroomService;
 
 import com.minakov.ConnectionUtils;
-import com.minakov.dao.brandDAO.BrandDAO;
 import com.minakov.dao.carShowroomDAO.CarShowroomDAO;
 import com.minakov.entity.carShowroom.CarShowroom;
 import com.minakov.service.Service;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarShowroomService implements Service<CarShowroom> {
+
+    private final String filterQuery = "select car_showroom.id as id, car_showroom.street as street,\n" +
+            "\tcar_showroom.house_number as house, city.name as city\n" +
+            "\tfrom city\n" +
+            "\tjoin car_showroom on city.id = car_showroom.city_id\n" +
+            "\twhere ";
 
     private CarShowroomDAO dao;
     private int id;
@@ -54,15 +58,50 @@ public class CarShowroomService implements Service<CarShowroom> {
     }
 
     public List<CarShowroom> getAll(String filterText, int number) {
+        if (filterText == null || filterText.isEmpty()) {
+            return getAll();
+        } else {
+            return findAllMatches(filterText, number);
+        }
+    }
+
+    private List<CarShowroom> findAllMatches(String filterText, int number) {
+        List<CarShowroom> showrooms = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder(filterQuery);
+        switch (number) {
+            case 1:
+                query.append("lower(car_showroom.street) ");
+                break;
+            case 2:
+                query.append("lower(car_showroom.house_number) ");
+                break;
+            case 3:
+                query.append("lower(city.name) ");
+                break;
+        }
+        query.append("like lower('%").append(filterText).append("%');");
+
+        System.out.println(query.toString());
+
         try (Connection connection = DriverManager.getConnection(ConnectionUtils.URL.value,
-                ConnectionUtils.USER.value, ConnectionUtils.PASSWORD.value))
-        {
-            dao = new CarShowroomDAO(connection);
-            return dao.getAll();
+                ConnectionUtils.USER.value, ConnectionUtils.PASSWORD.value)) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(query.toString())) {
+                    while (resultSet.next()){
+                        showrooms.add(new CarShowroom(resultSet.getInt("id"),
+                                resultSet.getString("street"),
+                                resultSet.getShort("house"),
+                                resultSet.getString("city"))
+                        );
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return showrooms;
     }
 
     @Override
